@@ -28,6 +28,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.0.2
+  mobx: ^2.0.6+1
+  flutter_mobx: ^2.0.3+2
   flutter:
     sdk: flutter
 

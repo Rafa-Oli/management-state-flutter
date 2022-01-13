@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:management_states/bloc/app_bloc.dart';
+import 'package:management_states/mobx/app_store.dart';
 import 'package:management_states/redux/app_store.dart';
 
 void main() {
@@ -33,6 +35,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final appBloc = AppBloc();
 
+  final appStore = AppStore();
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -61,22 +65,29 @@ class _MyHomePageState extends State<MyHomePage> {
             //         appStore.state.toString(),
             //         style: Theme.of(context).textTheme.headline4,
             //       );
-            //     })
-            StreamBuilder(
-                stream: appBloc.stream,
-                builder: (_, __) {
-                  return Text(
-                    appBloc.state.toString(),
-                    style: Theme.of(context).textTheme.headline4,
-                  );
-                })
+            //     }) redux
+            // StreamBuilder(
+            //     stream: appBloc.stream,
+            //     builder: (_, __) {
+            //       return Text(
+            //         appBloc.state.toString(),
+            //         style: Theme.of(context).textTheme.headline4,
+            //       );
+            //     }) bloc
+            Observer(builder: (_) {
+              return Text(
+                appStore.counter.value.toString(),
+                style: Theme.of(context).textTheme.headline4,
+              );
+            })
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // appStore.dispatcher(AppAction.increment);
-          appBloc.add(AppEvent.increment);
+          // appStore.dispatcher(AppAction.increment); redux
+          // appBloc.add(AppEvent.increment); bloc
+          appStore.increment();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
