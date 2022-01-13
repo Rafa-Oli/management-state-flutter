@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:management_states/bloc/app_bloc.dart';
 import 'package:management_states/redux/app_store.dart';
 
 void main() {
@@ -30,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final appBloc = AppBloc();
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -51,11 +54,19 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            AnimatedBuilder(
-                animation: appStore,
+            // AnimatedBuilder(
+            //     animation: appStore,
+            //     builder: (_, __) {
+            //       return Text(
+            //         appStore.state.toString(),
+            //         style: Theme.of(context).textTheme.headline4,
+            //       );
+            //     })
+            StreamBuilder(
+                stream: appBloc.stream,
                 builder: (_, __) {
                   return Text(
-                    appStore.state.toString(),
+                    appBloc.state.toString(),
                     style: Theme.of(context).textTheme.headline4,
                   );
                 })
@@ -64,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          appStore.dispatcher(AppAction.increment);
+          // appStore.dispatcher(AppAction.increment);
+          appBloc.add(AppEvent.increment);
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
